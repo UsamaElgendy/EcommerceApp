@@ -40,6 +40,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
 
+
+    private String type = "";
+
     public HomeActivity() {
     }
 
@@ -48,6 +51,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        // come from AdminCategoryActivity
+
+        // first we need to check if intent not equal  to null ... error
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            type = getIntent().getExtras().get("Admin").toString();
+        }
+
 
         // make an instance in database
         ProductsRef = FirebaseDatabase.getInstance().getReference().child("Products");
@@ -88,13 +100,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         TextView userNameTextView = headerView.findViewById(R.id.user_profile_name);
         CircleImageView profileImageView = headerView.findViewById(R.id.user_profile_image);
 
-        // put user name from Prevalent class we save all data in a public method
-        userNameTextView.setText(Prevalent.CurrentOnlineUser.getName());
 
-
-        // use Picasso library because no data in database ... we don't work in setting activity right now
-        Picasso.get().load(Prevalent.CurrentOnlineUser.getImage()).placeholder(R.drawable.profile).into(profileImageView);
-
+        if (!type.equals("Admin")){
+            // put user name from Prevalent class we save all data in a public method
+            userNameTextView.setText(Prevalent.CurrentOnlineUser.getName());
+            // use Picasso library because no data in database ... we don't work in setting activity right now
+            Picasso.get().load(Prevalent.CurrentOnlineUser.getImage()).placeholder(R.drawable.profile).into(profileImageView);
+        }
 
         recyclerView = findViewById(R.id.recycler_menu);
         recyclerView.setHasFixedSize(true);
@@ -123,13 +135,22 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         holder.txtProductPrice.setText("Price = " + model.getPrice() + "$");
                         Picasso.get().load(model.getImage()).into(holder.imageView);
 
-                        // here we can make a on click listener on a list view because i have a position
+                        // here we can make a on click listener on a list view because i have a positio
+
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent intent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
-                                intent.putExtra("pid", model.getPid());
-                                startActivity(intent);
+
+                                // here wre check if the type is admin to make admin allow to delete or update products
+                                if (type.equals("Admin")) {
+                                        Intent intent = new Intent(HomeActivity.this, AdminMaintainProductsActivity.class);
+                                    intent.putExtra("pid", model.getPid());
+                                    startActivity(intent);
+                                } else {
+                                    Intent intent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
+                                    intent.putExtra("pid", model.getPid());
+                                    startActivity(intent);
+                                }
                             }
                         });
                     }

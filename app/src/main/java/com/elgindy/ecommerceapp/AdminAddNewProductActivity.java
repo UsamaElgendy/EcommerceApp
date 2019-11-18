@@ -50,7 +50,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_add_new_product);
 
-        // test in github ...
+        // text 2 on the github push
 
 
         CategoryName = getIntent().getExtras().get("category").toString();

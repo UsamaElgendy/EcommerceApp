@@ -1,5 +1,6 @@
 package com.elgindy.ecommerceapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,11 +54,11 @@ public class AdminNewOrdersActivity extends AppCompatActivity {
                 = new FirebaseRecyclerAdapter<AdminOrders, AdminOrderViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull AdminOrderViewHolder holder, final int position, @NonNull final AdminOrders model) {
-                holder.userName.setText("Name: " +model.getName());
-                holder.userPhoneNumber.setText("Phone: " +model.getPhone());
-                holder.userTotalPrice.setText("Total amount is : : " +model.getTotalAmount());
-                holder.userDateTime.setText("Order at : " +model.getDate() + " " + model.getTime());
-                holder.userShippingAddress.setText("Shipping Address: " +model.getAddress() + ", " + model.getCity());
+                holder.userName.setText("Name: " + model.getName());
+                holder.userPhoneNumber.setText("Phone: " + model.getPhone());
+                holder.userTotalPrice.setText("Total amount is : : " + model.getTotalAmount());
+                holder.userDateTime.setText("Order at : " + model.getDate() + " " + model.getTime());
+                holder.userShippingAddress.setText("Shipping Address: " + model.getAddress() + ", " + model.getCity());
 
                 holder.showOrdersBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -64,11 +66,49 @@ public class AdminNewOrdersActivity extends AppCompatActivity {
 
                         String uID = getRef(position).getKey();
 
-                        Intent intent = new Intent(AdminNewOrdersActivity.this,AdminUserProductsActivity.class);
+                        Intent intent = new Intent(AdminNewOrdersActivity.this, AdminUserProductsActivity.class);
                         // here you send the user id to the AdminAddNewProductActivity
                         intent.putExtra("uid", uID);
-                        Log.d("TAG",uID + " ");
+                        Log.d("TAG", uID + " ");
                         startActivity(intent);
+                    }
+                });
+
+                // here we put a code to make Admin remove the Already Shipped Orders
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // display a message
+                        // dialog
+                        CharSequence option[] = new CharSequence[]{
+                                // here you put the option you need to show
+                                "Yes",
+                                "No"
+
+                        };
+                        // alert dialog take a context
+                        AlertDialog.Builder builder = new AlertDialog.Builder(AdminNewOrdersActivity.this);
+                        builder.setTitle("Have you shipped this order products ? ");
+
+                        // here you show the option in dialog yes or no with on click listener
+                        // here you have a int as a position
+                        builder.setItems(option, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+
+                                // if i == 0 --> the user chick in yes button
+                                if (i == 0) {
+                                    String uID = getRef(position).getKey();
+
+                                    // this method to remove have one parameter uID --> id of user order (phone)
+                                    RemoverOrder(uID);
+                                    // else if the user chick in the no button
+                                } else {
+                                    finish();
+                                }
+                            }
+                        });
+                        builder.show();
                     }
                 });
 
@@ -103,5 +143,13 @@ public class AdminNewOrdersActivity extends AppCompatActivity {
             showOrdersBtn = itemView.findViewById(R.id.show_all_product_btn);
 
         }
+    }
+
+
+    private void RemoverOrder(String uID) {
+        // first connect with database
+        // orderRef = FirebaseDatabase.getInstance().getReference().child("Orders");
+
+        orderRef.child(uID).removeValue();
     }
 }

@@ -1,6 +1,8 @@
 package com.elgindy.ecommerceapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,12 +51,26 @@ public class AdminNewOrdersActivity extends AppCompatActivity {
         FirebaseRecyclerAdapter<AdminOrders, AdminOrderViewHolder> adapter
                 = new FirebaseRecyclerAdapter<AdminOrders, AdminOrderViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull AdminOrderViewHolder holder, int position, @NonNull AdminOrders model) {
+            protected void onBindViewHolder(@NonNull AdminOrderViewHolder holder, final int position, @NonNull final AdminOrders model) {
                 holder.userName.setText("Name: " +model.getName());
                 holder.userPhoneNumber.setText("Phone: " +model.getPhone());
                 holder.userTotalPrice.setText("Total amount is : : " +model.getTotalAmount());
                 holder.userDateTime.setText("Order at : " +model.getDate() + " " + model.getTime());
                 holder.userShippingAddress.setText("Shipping Address: " +model.getAddress() + ", " + model.getCity());
+
+                holder.showOrdersBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        String uID = getRef(position).getKey();
+
+                        Intent intent = new Intent(AdminNewOrdersActivity.this,AdminUserProductsActivity.class);
+                        // here you send the user id to the AdminAddNewProductActivity
+                        intent.putExtra("uid", uID);
+                        Log.d("TAG",uID + " ");
+                        startActivity(intent);
+                    }
+                });
 
             }
 

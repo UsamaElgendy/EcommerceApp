@@ -7,6 +7,7 @@
     android:layout_marginStart="15dp"
     android:layout_marginTop="20dp"
     android:layout_marginEnd="15dp"
+    android:layout_marginBottom="5dp"
     app:cardElevation="15dp"
     tools:context="com.elgindy.ecommerceapp.AdminMaintainProductsActivity">
 
@@ -69,16 +70,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/product_description_maintain"
-            android:layout_margin="5dp"
-            android:text="Apply changes"
             android:layout_marginTop="2dp"
             android:background="@drawable/buttons"
-            android:hint="Product Description"
             android:padding="12dp"
+            android:text="Apply changes"
             android:textAlignment="center"
+            android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="18dp"
-            android:textAllCaps="false"/>
+            android:textSize="18dp" />
+
+
+        <Button
+            android:id="@+id/delete_product_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/apply_chances_button"
+            android:background="@drawable/buttons"
+            android:padding="12dp"
+            android:text="Delete the Product"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:layout_margin="30dp"
+            android:textColor="@android:color/white"
+            android:textSize="18dp" />
 
     </RelativeLayout>
 

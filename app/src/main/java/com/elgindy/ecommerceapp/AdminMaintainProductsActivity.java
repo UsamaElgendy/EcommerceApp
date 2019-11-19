@@ -23,8 +23,10 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 
 // here we put the code make the delete and update and edit in the product
+
+// in a version 3 from this project i make a delete btn to delete a product
 public class AdminMaintainProductsActivity extends AppCompatActivity {
-    private Button appluChangesBtn;
+    private Button appluChangesBtn, deleteBtn;
     private EditText name, price, description;
     private ImageView imageView;
 
@@ -48,6 +50,8 @@ public class AdminMaintainProductsActivity extends AppCompatActivity {
         price = findViewById(R.id.product_price_maintain);
         description = findViewById(R.id.product_description_maintain);
         imageView = findViewById(R.id.product_image_maintain);
+        deleteBtn = findViewById(R.id.delete_product_button);
+
 
         displaySpecificProductInfo();
         appluChangesBtn.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +61,26 @@ public class AdminMaintainProductsActivity extends AppCompatActivity {
             }
         });
 
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteThisProduct();
+            }
+        });
+
+    }
+
+    private void deleteThisProduct() {
+        productsRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Intent intent = new Intent(AdminMaintainProductsActivity.this,AdminCategoryActivity.class);
+                startActivity(intent);
+                finish();
+
+                Toast.makeText(AdminMaintainProductsActivity.this, "TRis product Is deleted Successfully.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -67,11 +91,11 @@ public class AdminMaintainProductsActivity extends AppCompatActivity {
 
         if (pName.equals("")) {
             Toast.makeText(this, "Write down product Name", Toast.LENGTH_SHORT).show();
-        } else if (pPrice   .equals("")) {
+        } else if (pPrice.equals("")) {
             Toast.makeText(this, "Write down product Price", Toast.LENGTH_SHORT).show();
         } else if (pName.equals("")) {
             Toast.makeText(this, "Write down product Description", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
             HashMap<String, Object> productMap = new HashMap<>();
             productMap.put("pid", productID);
             productMap.put("description", pDescription);
@@ -83,9 +107,9 @@ public class AdminMaintainProductsActivity extends AppCompatActivity {
             productsRef.updateChildren(productMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         Toast.makeText(AdminMaintainProductsActivity.this, "Changes applied successfully", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(AdminMaintainProductsActivity.this,AdminCategoryActivity.class);
+                        Intent intent = new Intent(AdminMaintainProductsActivity.this, AdminCategoryActivity.class);
                         startActivity(intent);
                         finish();
                     }

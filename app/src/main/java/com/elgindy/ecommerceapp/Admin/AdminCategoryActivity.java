@@ -1,4 +1,4 @@
-package com.elgindy.ecommerceapp;
+package com.elgindy.ecommerceapp.Admin;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.elgindy.ecommerceapp.HomeActivity;
+import com.elgindy.ecommerceapp.MainActivity;
+import com.elgindy.ecommerceapp.R;
 
 
 public class AdminCategoryActivity extends AppCompatActivity {
@@ -31,7 +35,7 @@ public class AdminCategoryActivity extends AppCompatActivity {
         maintainProductsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AdminCategoryActivity.this,HomeActivity.class);
+                Intent intent = new Intent(AdminCategoryActivity.this, HomeActivity.class);
                 intent.putExtra("Admin","Admin");
                 startActivity(intent);
             }
@@ -40,7 +44,7 @@ public class AdminCategoryActivity extends AppCompatActivity {
         LogoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AdminCategoryActivity.this,MainActivity.class);
+                Intent intent = new Intent(AdminCategoryActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();

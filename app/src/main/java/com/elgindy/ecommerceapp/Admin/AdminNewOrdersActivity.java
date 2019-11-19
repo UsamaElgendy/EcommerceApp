@@ -1,4 +1,4 @@
-package com.elgindy.ecommerceapp;
+package com.elgindy.ecommerceapp.Admin;
 
 import android.content.DialogInterface;
 import android.content.Intent;

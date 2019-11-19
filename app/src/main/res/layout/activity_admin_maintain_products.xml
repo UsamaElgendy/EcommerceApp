@@ -9,7 +9,7 @@
     android:layout_marginEnd="15dp"
     android:layout_marginBottom="5dp"
     app:cardElevation="15dp"
-    tools:context="com.elgindy.ecommerceapp.AdminMaintainProductsActivity">
+    tools:context="com.elgindy.ecommerceapp.Admin.AdminMaintainProductsActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

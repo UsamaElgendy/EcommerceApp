@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         loadingBar = new ProgressDialog(this);
 
 
-        chkBoxRememberMe = (CheckBox) findViewById(R.id.remember_me_chkb);
+        chkBoxRememberMe = findViewById(R.id.remember_me_chkb);
         Paper.init(this);
 
 

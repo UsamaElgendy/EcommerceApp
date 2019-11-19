@@ -2,6 +2,7 @@ package com.elgindy.ecommerceapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -101,7 +102,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         CircleImageView profileImageView = headerView.findViewById(R.id.user_profile_image);
 
 
-        if (!type.equals("Admin")){
+        if (!type.equals("Admin")) {
             // put user name from Prevalent class we save all data in a public method
             userNameTextView.setText(Prevalent.CurrentOnlineUser.getName());
             // use Picasso library because no data in database ... we don't work in setting activity right now
@@ -143,7 +144,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                                 // here wre check if the type is admin to make admin allow to delete or update products
                                 if (type.equals("Admin")) {
-                                        Intent intent = new Intent(HomeActivity.this, AdminMaintainProductsActivity.class);
+                                    Intent intent = new Intent(HomeActivity.this, AdminMaintainProductsActivity.class);
+                                    // here we send a id to AdminMaintainProductsActivity
                                     intent.putExtra("pid", model.getPid());
                                     startActivity(intent);
                                 } else {

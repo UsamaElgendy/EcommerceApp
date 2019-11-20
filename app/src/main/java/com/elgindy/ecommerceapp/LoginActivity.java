@@ -25,12 +25,14 @@ import Model.Users;
 import Prevalent.Prevalent;
 import io.paperdb.Paper;
 
+
+// in v3 i make a link for forget password
 public class LoginActivity extends AppCompatActivity {
     private EditText InputPhoneNumber, InputPassword;
     private Button LoginButton;
     private CheckBox chkBoxRememberMe;
     private ProgressDialog loadingBar;
-    private TextView AdminLink, NotAdminLink;
+    private TextView AdminLink, NotAdminLink, ForgetPasswordLink;
     private String parentDbName = "Users";
 
     @Override
@@ -43,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
         InputPhoneNumber = findViewById(R.id.login_phone_number_input);
         AdminLink = findViewById(R.id.admin_panel_link);
         NotAdminLink = findViewById(R.id.not_admin_panel_link);
+        ForgetPasswordLink = findViewById(R.id.forget_password_link);
+
         loadingBar = new ProgressDialog(this);
 
 
@@ -74,6 +78,15 @@ public class LoginActivity extends AppCompatActivity {
                 AdminLink.setVisibility(View.VISIBLE);
                 NotAdminLink.setVisibility(View.INVISIBLE);
                 parentDbName = "Users";
+            }
+        });
+
+        ForgetPasswordLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this,ResetPasswordActivity.class);
+                intent.putExtra("check","login");
+                startActivity(intent);
             }
         });
     }

@@ -1,8 +1,10 @@
 package com.elgindy.ecommerceapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.internal.DialogRedirect;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -62,7 +65,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
             vertifyButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick (View v) {
+                public void onClick(View v) {
                     setAnswers();
 
                 }
@@ -71,9 +74,106 @@ public class ResetPasswordActivity extends AppCompatActivity {
         } else if (check.equals("login")) {
             phoneNumber.setVisibility(View.VISIBLE);
 
+            // here we make a verify btn .. first check for phone and second check to questions
+            vertifyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    vertifyUser();
+                }
+            });
+
         }
     }
-    private void setAnswers(){
+
+    private void vertifyUser() {
+        final String phone = phoneNumber.getText().toString();
+        final String answer1 = question1.getText().toString().toLowerCase();
+        final String answer2 = question2.getText().toString().toLowerCase();
+
+        if (!phone.equals("") && !answer1.equals("") && !answer2.equals("")) {
+            final DatabaseReference ref = FirebaseDatabase
+                    .getInstance().getReference()
+                    .child("Users")
+                    .child(phone);
+
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String mPhone = dataSnapshot.child("phone").getValue().toString();
+
+                        if (dataSnapshot.hasChild("Security Questions")) {
+                            String ans1 = dataSnapshot.child("Security Questions").child("answer1").getValue().toString();
+                            String ans2 = dataSnapshot.child("Security Questions").child("answer2").getValue().toString();
+
+                            if (!ans1.equals(answer1)) {
+                                Toast.makeText(ResetPasswordActivity.this, "Your 1st answer is wrong.", Toast.LENGTH_SHORT).show();
+                            } else if (!ans2.equals(answer2)) {
+                                Toast.makeText(ResetPasswordActivity.this, "Your 2nd answer is wrong.", Toast.LENGTH_SHORT).show();
+                            } else {
+
+
+                                // TODO: Alert Dialog her to user change password
+                                final AlertDialog.Builder builder = new AlertDialog.Builder(ResetPasswordActivity.this);
+                                builder.setTitle("New Password");
+
+                                final EditText newPassword = new EditText(ResetPasswordActivity.this);
+                                newPassword.setHint("Write new Password here...");
+                                builder.setView(newPassword);
+
+                                builder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (!newPassword.getText().toString().equals("")) {
+                                            ref.child("password")
+                                                    .setValue(newPassword.getText().toString())
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()) {
+                                                                Toast.makeText(ResetPasswordActivity.this, "Password Change Successfully", Toast.LENGTH_SHORT).show();
+
+                                                                Intent intent = new Intent(ResetPasswordActivity.this,LoginActivity.class);
+                                                                startActivity(intent);
+                                                            }
+                                                        }
+                                                    });
+                                        }
+                                    }
+                                });
+                                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
+                                builder.show();
+
+                            }
+
+
+                        } else {
+                            Toast.makeText(ResetPasswordActivity.this, "You have not set the security questions.", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } else {
+                        Toast.makeText(ResetPasswordActivity.this, "This phone number not exist.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        } else {
+            Toast.makeText(this, "Please Complete the form ", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void setAnswers() {
 
         // lowerCase here because when the data store in the firebase . don't look for lower and upper
         String answer1 = question1.getText().toString().toLowerCase();
@@ -95,9 +195,9 @@ public class ResetPasswordActivity extends AppCompatActivity {
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 Toast.makeText(ResetPasswordActivity.this, "you have set Security Questions Successfully.", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(ResetPasswordActivity.this,HomeActivity.class);
+                                Intent intent = new Intent(ResetPasswordActivity.this, HomeActivity.class);
                                 startActivity(intent);
 
 
@@ -109,7 +209,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     }
 
-    private void displayPreviousAnswers(){
+    private void displayPreviousAnswers() {
         DatabaseReference ref = FirebaseDatabase
                 .getInstance().getReference()
                 .child("Users")
@@ -119,7 +219,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         ref.child("Security Questions").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     String ans1 = dataSnapshot.child("answer1").getValue().toString();
                     String ans2 = dataSnapshot.child("answer2").getValue().toString();
 

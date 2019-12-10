@@ -118,13 +118,12 @@ public class LoginActivity extends AppCompatActivity {
             // method write take two parameter is key and value
             Paper.book().write(Prevalent.UserPhoneKey, phone);
             Paper.book().write(Prevalent.UserPasswordKey, password);
-
         }
+
 
         // make database by a Reference
         final DatabaseReference RootRef;
         RootRef = FirebaseDatabase.getInstance().getReference();
-
 
         RootRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

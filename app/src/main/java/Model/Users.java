@@ -1,7 +1,9 @@
 package Model;
 
+
 public class Users {
     //fields in database
+    private static Users instance = null ;
     private String name, phone, password, image, address;
 
     public Users()
@@ -17,6 +19,12 @@ public class Users {
         this.address = address;
     }
 
+    public static Users getInstance() {
+        if (instance == null) {
+            instance = new Users();
+        }
+        return instance;
+    }
 
     public String getName() {
         return name;

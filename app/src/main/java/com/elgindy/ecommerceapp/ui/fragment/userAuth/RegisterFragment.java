@@ -37,10 +37,10 @@ public class RegisterFragment extends BaseFragment {
 
     @BindView(R.id.register_username_input_ET)
     EditText registerUsernameInputET;
-    @BindView(R.id.register_phone_number_ET)
-    EditText registerPhoneNumberET;
     @BindView(R.id.register_email_ET)
     EditText registerEmailET;
+    @BindView(R.id.register_phone_number_ET)
+    EditText registerPhoneNumberET;
     @BindView(R.id.register_password_ET)
     EditText registerPasswordET;
     @BindView(R.id.register_btn)
@@ -71,6 +71,7 @@ public class RegisterFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_register, container, false);
         ButterKnife.bind(this, view);
+
 
         HelperMethod.disappearKeypad(getActivity(), view);
 
@@ -158,7 +159,7 @@ public class RegisterFragment extends BaseFragment {
                 userMap.put("phone", phone);
                 userMap.put("userId", userId);
                 userMap.put("image", "");
-                userMap.put("Address", "");
+                userMap.put("address", "");
 
                 userRef.child(userId).updateChildren(userMap);
                 redirectHomeActivity();

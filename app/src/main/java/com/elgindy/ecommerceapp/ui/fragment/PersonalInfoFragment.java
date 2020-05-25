@@ -18,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.elgindy.ecommerceapp.R;
 import com.elgindy.ecommerceapp.helper.HelperMethod;
+import com.elgindy.ecommerceapp.ui.activity.HomeUserCycleActivity;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,7 +34,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.squareup.picasso.Picasso;
-import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.HashMap;
 
@@ -46,6 +46,7 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class PersonalInfoFragment extends BaseFragment {
+    private static final int PICK_IMAGE_REQUEST_FIRST = 1;
 
     @BindView(R.id.toolbar_settings)
     Toolbar toolbarSettings;
@@ -72,7 +73,7 @@ public class PersonalInfoFragment extends BaseFragment {
     private StorageTask uploadTask;
     private StorageReference storageProfilePrictureRef;
     private String checker = "";
-    private String userId;
+    private String uId;
 
 
     public PersonalInfoFragment() {
@@ -91,15 +92,25 @@ public class PersonalInfoFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_personal_info, container, false);
         ButterKnife.bind(this, view);
-        storageProfilePrictureRef = FirebaseStorage.getInstance().getReference().child("Profile pictures");
-        userInfoDisplay(settingsProfileImage, settingsFullNameET, settingsPhoneNumberET, settingsAddressET);
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        uId = currentUser.getUid();
+
+
+        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar.setVisibility(View.GONE);
+
+        storageProfilePrictureRef = FirebaseStorage.getInstance().getReference().child("profilePictures");
+
+        userInfoDisplay();
 
         return view;
     }
 
     @Override
     public void onBack() {
-        HelperMethod.replaceFragment(getFragmentManager(), new HomeFragment(), R.id.activity_home_user_cycle);
+        Intent intent = new Intent(getActivity(), HomeUserCycleActivity.class);
+        startActivity(intent);
     }
 
     @OnClick({R.id.profile_image_change_btn, R.id.update_btn})
@@ -107,11 +118,7 @@ public class PersonalInfoFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.profile_image_change_btn:
                 checker = "clicked";
-
-                // library let you crop image uploaded
-                CropImage.activity(imageUri)
-                        .setAspectRatio(1, 1)
-                        .start(baseActivity);
+                openImageChooser();
                 break;
             case R.id.update_btn:
                 if (checker.equals("clicked")) {
@@ -123,25 +130,15 @@ public class PersonalInfoFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private void openImageChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST_FIRST);
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            imageUri = result.getUri();
-
-            settingsProfileImage.setImageURI(imageUri);
-        } else {
-            Toast.makeText(baseActivity, "Error, Try Again.", Toast.LENGTH_SHORT).show();
-
-            HelperMethod.replaceFragment(getFragmentManager(), new PersonalInfoFragment(), R.id.activity_home_user_cycle);
-        }
     }
 
     private void updateOnlyUserInfo() {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        userId = currentUser.getUid();
 
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -149,40 +146,38 @@ public class PersonalInfoFragment extends BaseFragment {
         HashMap<String, Object> userMap = new HashMap<>();
         userMap.put("name", settingsFullNameET.getText().toString());
         userMap.put("address", settingsAddressET.getText().toString());
-        userMap.put("phoneOrder", settingsPhoneNumberET.getText().toString());
-        ref.child(userId).updateChildren(userMap);
+        userMap.put("phone", settingsPhoneNumberET.getText().toString());
+        ref.child(uId).updateChildren(userMap);
 
         HelperMethod.replaceFragment(getFragmentManager(), new HomeFragment(), R.id.activity_home_user_cycle);
-        Toast.makeText(baseActivity, "Profile Info update successfully.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Profile Info update successfully.", Toast.LENGTH_SHORT).show();
     }
-
 
     private void userInfoSaved() {
         if (TextUtils.isEmpty(settingsFullNameET.getText().toString())) {
-            Toast.makeText(baseActivity, "Name is mandatory.", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(settingsAddressET.getText().toString())) {
-            Toast.makeText(baseActivity, "Name is address.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "please write name", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(settingsPhoneNumberET.getText().toString())) {
-            Toast.makeText(baseActivity, "Name is mandatory.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "please write phone number ", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(settingsAddressET.getText().toString())) {
+            Toast.makeText(getContext(), "please write your address", Toast.LENGTH_SHORT).show();
         } else if (checker.equals("clicked")) {
             // if it is clicked it means that image are be selected
             uploadImage();
         }
     }
 
-
     private void uploadImage() {
         // ProgressDialog to wait and info
-        final ProgressDialog progressDialog = new ProgressDialog(baseActivity);
-        progressDialog.setTitle("Update Profile");
-        progressDialog.setMessage("Please wait, while we are updating your account information");
+        final ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setTitle("Update information");
+        progressDialog.setMessage("Please wait ...");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
 
         if (imageUri != null) {
             final StorageReference fileRef = storageProfilePrictureRef
-                    .child(userId + ".jpg");
+                    .child(uId + ".jpg");
 
             uploadTask = fileRef.putFile(imageUri);
 
@@ -207,30 +202,30 @@ public class PersonalInfoFragment extends BaseFragment {
                         HashMap<String, Object> userMap = new HashMap<>();
                         userMap.put("name", settingsFullNameET.getText().toString());
                         userMap.put("address", settingsAddressET.getText().toString());
-                        userMap.put("phoneOrder", settingsPhoneNumberET.getText().toString());
+                        userMap.put("phone", settingsPhoneNumberET.getText().toString());
                         userMap.put("image", myUrl);
-                        ref.child(userId).updateChildren(userMap);
+                        ref.child(uId).updateChildren(userMap);
 
                         progressDialog.dismiss();
 
-                        HelperMethod.replaceFragment(getFragmentManager(), new HomeFragment(), R.id.activity_home_user_cycle);
-                        Toast.makeText(baseActivity, "Profile Info update successfully.", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getContext(), HomeUserCycleActivity.class));
+                        Toast.makeText(getContext(), "Profile Info update successfully.", Toast.LENGTH_SHORT).show();
+                        getActivity().finish();
                     } else {
                         progressDialog.dismiss();
-                        Toast.makeText(baseActivity, "Error.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Error.", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         } else {
-            Toast.makeText(baseActivity, "image is not selected.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "image is not selected.", Toast.LENGTH_SHORT).show();
         }
     }
 
-
-    private void userInfoDisplay(final CircleImageView profileImageView, final EditText fullNameEditText, final EditText userPhoneEditText, final EditText addressEditText) {
+    private void userInfoDisplay() {
 
         // retrieve data from database
-        DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
+        DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uId);
 
         UsersRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -246,10 +241,13 @@ public class PersonalInfoFragment extends BaseFragment {
                         String address = dataSnapshot.child("address").getValue().toString();
 
                         // to display image
-                        Picasso.get().load(image).into(profileImageView);
-                        fullNameEditText.setText(name);
-                        userPhoneEditText.setText(phone);
-                        addressEditText.setText(address);
+
+                        if (!image.equals("")) {
+                            Picasso.get().load(image).into(settingsProfileImage);
+                        }
+                        settingsFullNameET.setText(name);
+                        settingsPhoneNumberET.setText(phone);
+                        settingsAddressET.setText(address);
                     }
                 }
             }
@@ -262,4 +260,19 @@ public class PersonalInfoFragment extends BaseFragment {
     }
 
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST_FIRST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            imageUri = data.getData(); // TODO :  this variable contain our uri of picture
+            Picasso.get().load(imageUri).into(settingsProfileImage);
+        } else {
+            Toast.makeText(getContext(), "Error, Try Again.", Toast.LENGTH_SHORT).show();
+
+            HelperMethod.replaceFragment(getFragmentManager(), new PersonalInfoFragment(), R.id.activity_home_user_cycle);
+
+        }
+    }
 }

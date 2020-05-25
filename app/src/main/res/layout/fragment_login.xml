@@ -24,7 +24,7 @@
             android:textSize="@dimen/_16ssp" />
 
     </LinearLayout>
-    
+
     <LinearLayout
         android:id="@+id/input_group"
         android:layout_width="match_parent"
@@ -54,6 +54,15 @@
             android:hint="Password"
             android:inputType="textPassword"
             android:padding="@dimen/_14sdp" />
+
+        <TextView
+            android:id="@+id/register_link_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_6sdp"
+            android:gravity="end"
+            android:text="Register"
+            android:textSize="@dimen/_16ssp" />
 
         <Button
             android:id="@+id/login_btn"

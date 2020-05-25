@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.elgindy.ecommerceapp.R;
 import com.elgindy.ecommerceapp.helper.HelperMethod;
-import com.elgindy.ecommerceapp.ui.fragment.WelcomeFragment;
+import com.elgindy.ecommerceapp.ui.fragment.userAuth.LoginFragment;
 
 public class UserCycleActivity extends BaseActivity {
 
@@ -13,7 +13,7 @@ public class UserCycleActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_cycle);
         HelperMethod.replaceFragment(getSupportFragmentManager()
-                , new WelcomeFragment()
+                , new LoginFragment()
                 , R.id.user_cycle_activity);
     }
 }

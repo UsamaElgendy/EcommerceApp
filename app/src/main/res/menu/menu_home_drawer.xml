@@ -21,7 +21,7 @@
             android:title="@string/Category" />
         <item
             android:id="@+id/nav_persona_info"
-            android:icon="@drawable/profile"
+            android:icon="@drawable/ic_person"
             android:iconTint="@android:color/white"
             android:title="@string/Settings" />
 

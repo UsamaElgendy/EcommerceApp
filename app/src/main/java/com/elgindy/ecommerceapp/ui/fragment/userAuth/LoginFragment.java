@@ -50,6 +50,8 @@ public class LoginFragment extends BaseFragment {
     Button loginBtn;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+    @BindView(R.id.register_link_btn)
+    TextView registerLinkBtn;
 
     private String email, password, studentName;
 
@@ -99,12 +101,14 @@ public class LoginFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.login_btn})
+    @OnClick({R.id.login_btn, R.id.register_link_btn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.login_btn:
                 signIn();
                 break;
+            case R.id.register_link_btn:
+                HelperMethod.replaceFragment(getFragmentManager(), new RegisterFragment(), R.id.user_cycle_activity);
         }
     }
 

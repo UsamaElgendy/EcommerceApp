@@ -16,9 +16,9 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import Model.Cart;
-import Model.Products;
-import viewHolder.CartViewHolder;
+import com.elgindy.ecommerceapp.model.Cart;
+
+import com.elgindy.ecommerceapp.adapter.CartViewHolder;
 
 public class AdminUserProductsActivity extends AppCompatActivity {
 
@@ -61,14 +61,14 @@ public class AdminUserProductsActivity extends AppCompatActivity {
 
                 holder.txtProductQuantaty.setText("Quantity = " + model.getQuantity());
                 holder.txtProductPrice.setText("product price = " + model.getPrice());
-                holder.txtProductName.setText(model.getPname());
+                holder.txtProductName.setText(model.getProductName());
 
             }
 
             @NonNull
             @Override
             public CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_item_layout, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_cart_item, parent, false);
                 CartViewHolder holder = new CartViewHolder(view);
                 return holder;
             }

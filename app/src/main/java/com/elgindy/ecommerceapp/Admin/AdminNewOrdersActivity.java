@@ -22,7 +22,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import Model.AdminOrders;
+import com.elgindy.ecommerceapp.model.AdminOrders;
 
 public class AdminNewOrdersActivity extends AppCompatActivity {
 

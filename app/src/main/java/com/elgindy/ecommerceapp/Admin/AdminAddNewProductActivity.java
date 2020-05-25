@@ -31,7 +31,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 public class AdminAddNewProductActivity extends AppCompatActivity {
-    private String CategoryName, Description, Price, Pname, saveCurrentDate, saveCurrentTime;
+    private String CategoryName, Description, Price, productName, saveCurrentDate, saveCurrentTime;
     private Button AddNewProductButton;
     private ImageView InputProductImage;
     private EditText InputProductName, InputProductDescription, InputProductPrice;
@@ -105,7 +105,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
     private void ValidateProductData() {
         Description = InputProductDescription.getText().toString();
         Price = InputProductPrice.getText().toString();
-        Pname = InputProductName.getText().toString();
+        productName = InputProductName.getText().toString();
 
 
         if (ImageUri == null) {
@@ -114,7 +114,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
             Toast.makeText(this, "Please write product description...", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(Price)) {
             Toast.makeText(this, "Please write product Price...", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(Pname)) {
+        } else if (TextUtils.isEmpty(productName)) {
             Toast.makeText(this, "Please write product name...", Toast.LENGTH_SHORT).show();
         } else {
             StoreProductInformation();
@@ -185,14 +185,14 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
 
     private void SaveProductInfoToDatabase() {
         HashMap<String, Object> productMap = new HashMap<>();
-        productMap.put("pid", productRandomKey);
+        productMap.put("productId", productRandomKey);
         productMap.put("date", saveCurrentDate);
         productMap.put("time", saveCurrentTime);
         productMap.put("description", Description);
         productMap.put("image", downloadImageUrl);
         productMap.put("category", CategoryName);
         productMap.put("price", Price);
-        productMap.put("pname", Pname);
+        productMap.put("productName", productName);
 
         ProductsRef.child(productRandomKey).updateChildren(productMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

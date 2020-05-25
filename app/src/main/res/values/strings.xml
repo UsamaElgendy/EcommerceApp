@@ -11,7 +11,7 @@
     <string name="menu_home">Card</string>
     <string name="menu_gallery">Orders</string>
     <string name="Category">Category</string>
-    <string name="Settings">Settings</string>
+    <string name="Settings">Personal Info</string>
     <string name="logout">logout</string>
     <string name="Search">search</string>
 </resources>

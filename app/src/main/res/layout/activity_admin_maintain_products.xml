@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="15dp"
-    android:layout_marginTop="20dp"
-    android:layout_marginEnd="15dp"
-    android:layout_marginBottom="5dp"
-    app:cardElevation="15dp"
-    tools:context="com.elgindy.ecommerceapp.Admin.AdminMaintainProductsActivity">
+    android:layout_margin="@dimen/_16sdp"
+    app:cardElevation="@dimen/_16sdp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,9 +13,7 @@
         <ImageView
             android:id="@+id/product_image_maintain"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_below="@+id/product_name"
-            android:layout_marginTop="2dp"
+            android:layout_height="@dimen/_200sdp"
             android:scaleType="centerCrop" />
 
         <EditText
@@ -28,26 +21,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/product_image_maintain"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/_6sdp"
             android:background="@drawable/input_design"
             android:hint="Product Name"
-            android:padding="12dp"
+            android:padding="@dimen/_12sdp"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="18dp" />
+            android:textSize="@dimen/_16ssp" />
 
         <EditText
             android:id="@+id/product_price_maintain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/product_name_maintain"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/_6sdp"
             android:background="@drawable/input_design"
             android:hint="Product Price"
-            android:padding="12dp"
+            android:padding="@dimen/_12sdp"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="18dp" />
+            android:textSize="@dimen/_16ssp" />
 
 
         <EditText
@@ -55,14 +48,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/product_price_maintain"
-            android:layout_margin="5dp"
-            android:layout_marginTop="2dp"
+            android:layout_margin="@dimen/_6sdp"
             android:background="@drawable/input_design"
             android:hint="Product Description"
-            android:padding="12dp"
+            android:padding="@dimen/_12sdp"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="16dp" />
+            android:textSize="@dimen/_16ssp" />
 
 
         <Button
@@ -70,14 +62,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/product_description_maintain"
-            android:layout_marginTop="2dp"
+            android:layout_margin="@dimen/_6sdp"
             android:background="@drawable/buttons"
-            android:padding="12dp"
+            android:padding="@dimen/_12sdp"
             android:text="Apply changes"
             android:textAlignment="center"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="18dp" />
+            android:textSize="@dimen/_16ssp" />
 
 
         <Button
@@ -85,14 +77,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/apply_chances_button"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
             android:background="@drawable/buttons"
-            android:padding="12dp"
+            android:padding="@dimen/_12sdp"
             android:text="Delete the Product"
             android:textAlignment="center"
             android:textAllCaps="false"
-            android:layout_margin="30dp"
             android:textColor="@android:color/white"
-            android:textSize="18dp" />
+            android:textSize="@dimen/_16ssp" />
 
     </RelativeLayout>
 

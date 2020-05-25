@@ -8,8 +8,6 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.elgindy.ecommerceapp.HomeActivity;
-import com.elgindy.ecommerceapp.MainActivity;
 import com.elgindy.ecommerceapp.R;
 
 
@@ -32,21 +30,21 @@ public class AdminCategoryActivity extends AppCompatActivity {
         CheckOrdersBtn  =findViewById(R.id.check_orders_btn);
         maintainProductsBtn  =findViewById(R.id.maintain_btn);
 
-        maintainProductsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AdminCategoryActivity.this, HomeActivity.class);
-                intent.putExtra("Admin","Admin");
-                startActivity(intent);
-            }
-        });
+//        maintainProductsBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(AdminCategoryActivity.this, HomeActivity.class);
+//                intent.putExtra("Admin","Admin");
+//                startActivity(intent);
+//            }
+//        });
 
         LogoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AdminCategoryActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+//                Intent intent = new Intent(AdminCategoryActivity.this, MainActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                startActivity(intent);
                 finish();
             }
         });

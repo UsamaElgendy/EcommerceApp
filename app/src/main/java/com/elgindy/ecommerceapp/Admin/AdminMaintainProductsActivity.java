@@ -40,7 +40,7 @@ public class AdminMaintainProductsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_maintain_products);
         // in this string i have a id of product
-        productID = getIntent().getStringExtra("pid");
+        productID = getIntent().getStringExtra("productId");
 
         // product id is refer to the id of the product
         // comes from homepage
@@ -86,22 +86,22 @@ public class AdminMaintainProductsActivity extends AppCompatActivity {
 
 
     private void applyChanges() {
-        String pName = name.getText().toString();
+        String productName = name.getText().toString();
         String pPrice = price.getText().toString();
         String pDescription = description.getText().toString();
 
-        if (pName.equals("")) {
+        if (productName.equals("")) {
             Toast.makeText(this, "Write down product Name", Toast.LENGTH_SHORT).show();
         } else if (pPrice.equals("")) {
             Toast.makeText(this, "Write down product Price", Toast.LENGTH_SHORT).show();
-        } else if (pName.equals("")) {
+        } else if (productName.equals("")) {
             Toast.makeText(this, "Write down product Description", Toast.LENGTH_SHORT).show();
         } else {
             HashMap<String, Object> productMap = new HashMap<>();
-            productMap.put("pid", productID);
+            productMap.put("productId", productID);
             productMap.put("description", pDescription);
             productMap.put("price", pPrice);
-            productMap.put("pname", pName);
+            productMap.put("productName", productName);
 
 
             // firebase method to update the data
@@ -132,13 +132,13 @@ public class AdminMaintainProductsActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     // the same name in the database field in AdminAddNewProductActivity
                     // in method SaveProductInfoToDatabase
-                    String pName = dataSnapshot.child("pname").getValue().toString();
+                    String productName = dataSnapshot.child("productName").getValue().toString();
                     String pPrice = dataSnapshot.child("price").getValue().toString();
                     String pDescription = dataSnapshot.child("description").getValue().toString();
                     String pImage = dataSnapshot.child("image").getValue().toString();
 
 
-                    name.setText(pName);
+                    name.setText(productName);
                     price.setText(pPrice);
                     description.setText(pDescription);
                     Picasso.get().load(pImage).into(imageView);

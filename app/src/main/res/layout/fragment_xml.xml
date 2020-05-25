@@ -3,8 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/activity_home_user_cycle"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Hello from welcome xml "
+        android:textAlignment="center"
+        android:textSize="@dimen/_24ssp" />
+
 </RelativeLayout>

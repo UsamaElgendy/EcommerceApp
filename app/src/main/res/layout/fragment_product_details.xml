@@ -9,7 +9,7 @@
         android:id="@+id/product_image_details_TV"
         android:layout_width="match_parent"
         android:layout_height="260dp"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerInside" />
 
     <TextView
         android:id="@+id/product_name_details_TV"

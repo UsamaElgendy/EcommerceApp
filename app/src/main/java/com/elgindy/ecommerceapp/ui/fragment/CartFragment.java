@@ -119,7 +119,7 @@ public class CartFragment extends BaseFragment {
                 holder.txtProductName.setText(model.getProductName());
 
                 // here we make a total price of purchases
-                int oneTypeProductTPrice = ((Integer.valueOf(model.getPrice()))) * Integer.valueOf(model.getQuantity());
+                    int oneTypeProductTPrice = ((Integer.valueOf(model.getPrice()))) * Integer.valueOf(model.getQuantity());
 
                 overTotalPrice = overTotalPrice + oneTypeProductTPrice;
 

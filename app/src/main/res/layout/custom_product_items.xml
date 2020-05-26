@@ -26,7 +26,8 @@
             android:layout_height="200dp"
             android:layout_below="@+id/product_name"
             android:layout_marginTop="2dp"
-            android:scaleType="centerCrop" />
+            android:src="@drawable/profile"
+            android:scaleType="centerInside" />
 
         <TextView
             android:id="@+id/product_price"

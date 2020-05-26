@@ -85,7 +85,7 @@ public class HomeFragment extends BaseFragment {
                         holder.txtProductName.setText(model.getProductName());
                         holder.txtProductDescription.setText(model.getDescription());
                         holder.txtProductPrice.setText(model.getPrice() + "$");
-                        Picasso.get().load(model.getImage()).into(holder.imageView);
+                         Picasso.get().load(model.getImage()).into(holder.imageView);
 
                         // here we can make a on click listener on a list view because i have a positio
 

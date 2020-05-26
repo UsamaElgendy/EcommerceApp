@@ -48,10 +48,6 @@ import static android.app.Activity.RESULT_OK;
 public class PersonalInfoFragment extends BaseFragment {
     private static final int PICK_IMAGE_REQUEST_FIRST = 1;
 
-    @BindView(R.id.toolbar_settings)
-    Toolbar toolbarSettings;
-    @BindView(R.id.app_bar_settings)
-    AppBarLayout appBarSettings;
     @BindView(R.id.settings_profile_image)
     CircleImageView settingsProfileImage;
     @BindView(R.id.profile_image_change_btn)
@@ -96,9 +92,6 @@ public class PersonalInfoFragment extends BaseFragment {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         uId = currentUser.getUid();
 
-
-        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.GONE);
 
         storageProfilePrictureRef = FirebaseStorage.getInstance().getReference().child("profilePictures");
 

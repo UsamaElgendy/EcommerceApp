@@ -51,8 +51,7 @@
 
 * this is our main class
 
-
-![Capture](https://user-images.githubusercontent.com/48976562/82856062-5c4a8400-9f0d-11ea-941d-36a11b05f197.png)
+<img width="250" alt="portfolio_view" src="https://user-images.githubusercontent.com/48976562/82856062-5c4a8400-9f0d-11ea-941d-36a11b05f197.png">
 
 -------------------------------------------------------------------------------------------------
 
